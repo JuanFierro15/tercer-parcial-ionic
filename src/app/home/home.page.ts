@@ -134,7 +134,7 @@ export class HomePage implements OnInit {
   async enviarSolicitud(): Promise<void> {
     const trimmedName = this.formData.fullName ? this.formData.fullName.trim() : '';
 
-    if (!trimmedName || !this.formData.serviceType || !this.formData.acceptTerms) {
+    if (!trimmedName || !this.formData.serviceType || !this.formData.departmentId || !this.formData.cityId || !this.formData.acceptTerms) {
       await this.feedbackService.showToast(
         'Por favor complete los campos obligatorios (*)',
         'danger',
@@ -145,11 +145,16 @@ export class HomePage implements OnInit {
 
     const selectedService = this.services.find(s => s.id === this.formData.serviceType);
     const serviceName = selectedService ? selectedService.name : this.formData.serviceType;
+    const selectedCity = this.cities.find(c => c.id === this.formData.cityId);
+    const departmentName = this.selectedDepartment ? this.selectedDepartment.name : '';
+    const cityName = selectedCity ? selectedCity.name : '';
     const smsStatusText = this.formData.smsNotifications ? 'Habilitadas (Sí)' : 'Deshabilitadas (No)';
 
     const summaryMessage = `
       <strong>Estudiante:</strong> ${trimmedName}<br>
       <strong>Servicio:</strong> ${serviceName}<br>
+      <strong>Departamento:</strong> ${departmentName}<br>
+      <strong>Municipio:</strong> ${cityName}<br>
       <strong>Notificaciones SMS:</strong> ${smsStatusText}<br>
       <strong>Términos:</strong> Aceptados correctamente.<br><br>
       <em>¡Tu registro ha quedado almacenado en memoria con éxito!</em>

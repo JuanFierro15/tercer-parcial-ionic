@@ -10,7 +10,8 @@ bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular({
-      mode: 'ios'
+      mode: 'ios',
+      innerHTMLTemplatesEnabled: true
     }),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideHttpClient(),
