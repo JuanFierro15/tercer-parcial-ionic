@@ -2,6 +2,8 @@
 export interface BookingRequest {
   fullName: string;
   serviceType: string;
+  departmentId: number | null;
+  cityId: number | null;
   smsNotifications: boolean;
   acceptTerms: boolean;
 }

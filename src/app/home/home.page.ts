@@ -74,6 +74,8 @@ export class HomePage {
   formData: BookingRequest = {
     fullName: '',
     serviceType: '',
+    departmentId: null,
+    cityId: null,
     smsNotifications: true,
     acceptTerms: false
   };
