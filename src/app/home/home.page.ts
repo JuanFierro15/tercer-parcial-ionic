@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -33,7 +33,9 @@ import {
   closeCircleOutline
 } from 'ionicons/icons';
 import { BookingRequest, AVAILABLE_SERVICES, ServiceCategory } from '../models/booking-request.model';
+import { Department } from '../models/department.model';
 import { FeedbackService } from '../services/feedback.service';
+import { ApiColombiaService } from '../services/api-colombia.service';
 
 @Component({
   selector: 'app-home',
@@ -66,10 +68,13 @@ import { FeedbackService } from '../services/feedback.service';
     IonModal
   ]
 })
-export class HomePage {
+export class HomePage implements OnInit {
   private readonly feedbackService = inject(FeedbackService);
+  private readonly apiColombiaService = inject(ApiColombiaService);
 
   readonly services: ServiceCategory[] = AVAILABLE_SERVICES;
+
+  departments: Department[] = [];
 
   formData: BookingRequest = {
     fullName: '',
@@ -89,6 +94,17 @@ export class HomePage {
       documentTextOutline,
       paperPlaneOutline,
       closeCircleOutline
+    });
+  }
+
+  ngOnInit(): void {
+    this.apiColombiaService.getDepartments().subscribe({
+      next: (departments) => {
+        this.departments = departments.sort((a, b) => a.name.localeCompare(b.name));
+      },
+      error: () => {
+        this.feedbackService.showToast('No se pudieron cargar los departamentos', 'danger', 3000);
+      }
     });
   }
 

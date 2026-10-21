@@ -54,6 +54,15 @@
           </ion-select>
         </ion-item>
 
+        <ion-item class="custom-input-item">
+          <ion-select label="Departamento *" labelPlacement="floating" placeholder="Seleccione un departamento"
+            [(ngModel)]="formData.departmentId" interface="action-sheet">
+            <ion-select-option *ngFor="let department of departments" [value]="department.id">
+              {{ department.name }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
         <!-- 3. SMS Notifications Toggle -->
         <ion-item class="custom-input-item">
           <ion-toggle [(ngModel)]="formData.smsNotifications" color="secondary" justify="space-between">
