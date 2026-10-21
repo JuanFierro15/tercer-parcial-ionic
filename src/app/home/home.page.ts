@@ -34,6 +34,7 @@ import {
 } from 'ionicons/icons';
 import { BookingRequest, AVAILABLE_SERVICES, ServiceCategory } from '../models/booking-request.model';
 import { Department } from '../models/department.model';
+import { City } from '../models/city.model';
 import { FeedbackService } from '../services/feedback.service';
 import { ApiColombiaService } from '../services/api-colombia.service';
 
@@ -75,6 +76,8 @@ export class HomePage implements OnInit {
   readonly services: ServiceCategory[] = AVAILABLE_SERVICES;
 
   departments: Department[] = [];
+  cities: City[] = [];
+  selectedDepartment: Department | null = null;
 
   formData: BookingRequest = {
     fullName: '',
@@ -104,6 +107,21 @@ export class HomePage implements OnInit {
       },
       error: () => {
         this.feedbackService.showToast('No se pudieron cargar los departamentos', 'danger', 3000);
+      }
+    });
+  }
+
+  onDepartmentChange(event: CustomEvent): void {
+    const departmentId: number = event.detail.value;
+    this.formData.cityId = null;
+    this.cities = [];
+    this.selectedDepartment = this.departments.find(department => department.id === departmentId) ?? null;
+    this.apiColombiaService.getCities(departmentId).subscribe({
+      next: (cities) => {
+        this.cities = cities.sort((a, b) => a.name.localeCompare(b.name));
+      },
+      error: () => {
+        this.feedbackService.showToast('No se pudieron cargar los municipios', 'danger', 3000);
       }
     });
   }

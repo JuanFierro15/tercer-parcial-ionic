@@ -56,9 +56,18 @@
 
         <ion-item class="custom-input-item">
           <ion-select label="Departamento *" labelPlacement="floating" placeholder="Seleccione un departamento"
-            [(ngModel)]="formData.departmentId" interface="action-sheet">
+            [(ngModel)]="formData.departmentId" (ionChange)="onDepartmentChange($event)" interface="action-sheet">
             <ion-select-option *ngFor="let department of departments" [value]="department.id">
               {{ department.name }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item class="custom-input-item">
+          <ion-select label="Municipio *" labelPlacement="floating" placeholder="Seleccione un municipio"
+            [(ngModel)]="formData.cityId" [disabled]="!formData.departmentId" interface="action-sheet">
+            <ion-select-option *ngFor="let city of cities" [value]="city.id">
+              {{ city.name }}
             </ion-select-option>
           </ion-select>
         </ion-item>
@@ -100,6 +109,18 @@
         </ion-button>
       </div>
 
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="selectedDepartment">
+    <ion-card-header>
+      <ion-card-subtitle color="primary">Departamento seleccionado</ion-card-subtitle>
+      <ion-card-title>{{ selectedDepartment.name }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Población: {{ selectedDepartment.population.toLocaleString('es-CO') }} habitantes</p>
+      <p>Superficie: {{ selectedDepartment.surface.toLocaleString('es-CO') }} km²</p>
+      <p>Municipios: {{ selectedDepartment.municipalities }}</p>
     </ion-card-content>
   </ion-card>
 
